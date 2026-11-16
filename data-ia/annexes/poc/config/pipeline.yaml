@@ -1,0 +1,46 @@
+# Configuration du pipeline conforme FashMatch V2 (POC)
+# Chaque règle renvoie à une exigence du cahier des charges (EX-xx).
+
+reference_date: "2026-11-13"   # date de référence pour la purge (reproductibilité)
+seed: 42
+n_profiles: 2000
+
+# EX-01 Minimisation : liste blanche des champs par finalité (RGPD art. 5.1.c, art. 25)
+allowlist:
+  match_recommandation:
+    - user_id
+    - birth_year
+    - gender_pref
+    - style_prefs
+    - size
+    - country
+    - consent_personalisation
+    - consent_training
+    - created_at
+    - last_activity_at
+  pay3x_eligibilite:
+    - user_id
+    - birth_year
+    - country
+
+# Champs directement identifiants : jamais copiés dans la zone analytique
+direct_identifiers: [email, full_name, phone]
+
+# EX-03 Pseudonymisation (RGPD art. 4.5, art. 32) : HMAC-SHA256, clé hors dépôt
+pseudonymisation:
+  key_env_var: FASHMATCH_PSEUDO_KEY
+  vault_path: vault/correspondance.csv   # table isolée, hors zone analytique
+
+# EX-04 Contrôle d'âge (RGPD art. 8 + art. 45 loi I&L : 15 ans ; crédit : majorité)
+age:
+  min_inscription: 15
+  min_pay3x: 18
+
+# EX-05 Durées de conservation (RGPD art. 5.1.e) — à valider avec le DPO
+retention:
+  compte_inactif_jours: 1095          # 3 ans après la dernière activité (référentiel CNIL)
+  evenements_navigation_jours: 395    # 13 mois
+  photo_cabine_heures: 0              # hors périmètre du POC (pas de photo réelle)
+
+# EX-09 Journalisation (RGPD art. 5.2, art. 30, art. 32 ; ISO 27701)
+audit_log: output/audit_log.jsonl

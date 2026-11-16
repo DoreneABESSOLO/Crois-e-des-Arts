@@ -1,0 +1,9 @@
+digraph leg { graph [rankdir=LR, pad=0.2, nodesep=0.3, label=<<b>Légende</b>>, labelloc=t, fontname="Liberation Sans", fontsize=15];
+  node [fontname="Liberation Sans", fontsize=12, style="filled", color="#5F5E5A", fillcolor="white"];
+  edge [fontname="Liberation Sans", fontsize=11, color="#5F5E5A"];
+  a [label="Acteur", shape=ellipse, fillcolor="white"]; t [label="Traitement", shape=box, style="rounded,filled"];
+  s [label="Stockage", shape=cylinder]; x [label="Tiers externe", shape=hexagon];
+  f [label="Frontière\n(pointillés)", shape=box, style="rounded,dashed"];
+  o [label="Point de\nvigilance", shape=box, style="rounded,filled", fillcolor="#FFF1E4", color="#E8710A", penwidth=2];
+  a -> t [label=" n°  donnée transportée "]; t -> s [style=invis]; s -> x [style=invis]; x -> f [style=invis]; f -> o [style=invis];
+}

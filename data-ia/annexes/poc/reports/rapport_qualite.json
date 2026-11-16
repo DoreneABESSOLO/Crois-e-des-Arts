@@ -1,0 +1,120 @@
+{
+  "run_id": "cf0055b6e8b7",
+  "reference_date": "2026-11-13",
+  "source_catalogue": "catalogue de substitution (styles.csv absent)",
+  "brut": {
+    "profils": 2060,
+    "catalogue": 3030,
+    "completude_profils": {
+      "email": 100.0,
+      "full_name": 100.0,
+      "phone": 100.0,
+      "birth_year": 100.0,
+      "declared_age": 100.0,
+      "gender_pref": 100.0,
+      "style_prefs": 100.0,
+      "size": 95.97,
+      "country": 100.0,
+      "street_address": 100.0,
+      "selfie_uri": 100.0,
+      "consent_personalisation": 100.0,
+      "consent_training": 100.0,
+      "created_at": 100.0,
+      "last_activity_at": 100.0
+    },
+    "doublons_profils_email_normalise": 60,
+    "incoherences_profils": {
+      "age_declare_vs_annee_naissance": 42,
+      "pays_non_iso": 21,
+      "activite_avant_creation": 0
+    },
+    "doublons_catalogue": 30,
+    "completude_catalogue": {
+      "id": 100.0,
+      "gender": 100.0,
+      "masterCategory": 100.0,
+      "subCategory": 100.0,
+      "articleType": 100.0,
+      "baseColour": 84.98,
+      "season": 100.0,
+      "year": 100.0,
+      "usage": 100.0,
+      "productDisplayName": 100.0
+    }
+  },
+  "apres": {
+    "profils_personnalisation": 1193,
+    "profils_entrainement": 515,
+    "quarantaine": 40,
+    "exclus_moins_15": 188,
+    "purges_inactifs": 299,
+    "champs_supprimes": [
+      "declared_age",
+      "street_address",
+      "selfie_uri",
+      "pay3x_age_ok"
+    ],
+    "completude_profils": {
+      "user_id": 100.0,
+      "birth_year": 100.0,
+      "gender_pref": 100.0,
+      "style_prefs": 100.0,
+      "size": 95.99,
+      "country": 100.0,
+      "consent_personalisation": 100.0,
+      "consent_training": 100.0,
+      "created_at": 100.0,
+      "last_activity_at": 100.0
+    },
+    "doublons_user_id": 0,
+    "incoherences_profils": {
+      "age_declare_vs_annee_naissance": 0,
+      "pays_non_iso": 0,
+      "activite_avant_creation": 0
+    },
+    "catalogue": 3000,
+    "catalogue_cabine_sur_avatar": 235
+  },
+  "biais": {
+    "profils_gender_pref": {
+      "femme": 70.3,
+      "homme": 22.7,
+      "mixte": 7.0
+    },
+    "profils_tranches_age": {
+      "15-17": 7.3,
+      "18-24": 28.9,
+      "25-34": 43.7,
+      "35-44": 17.3,
+      "45-54": 2.5,
+      "55+": 0.2
+    },
+    "catalogue_gender": {
+      "Men": 46.9,
+      "Women": 37.8,
+      "Unisex": 6.7,
+      "Boys": 4.5,
+      "Girls": 4.0
+    },
+    "catalogue_masterCategory": {
+      "Apparel": 54.1,
+      "Footwear": 26.8,
+      "Accessories": 19.1
+    },
+    "entrainement_vs_base_gender_pref": {
+      "base": {
+        "femme": 70.3,
+        "homme": 22.7,
+        "mixte": 7.0
+      },
+      "entrainement": {
+        "femme": 72.0,
+        "homme": 21.7,
+        "mixte": 6.2
+      }
+    },
+    "ratio_desequilibre_gender_pref": 10.0,
+    "ratio_desequilibre_catalogue_gender": 11.7
+  },
+  "audit_log_integre": true
+}

@@ -1,0 +1,48 @@
+// Carte des flux FashMatch V1 — source versionnée (Graphviz). Numéros = onglet Flux de l'inventaire.
+digraph flux_v1 {
+  graph [rankdir=LR, fontname="Liberation Sans", fontsize=24, labelloc=t, nodesep=0.45, ranksep=1.0, pad=0.4, newrank=true,
+         label=<<b>Carte des flux FashMatch V1</b><br/><font point-size="15" color="#555555">Chaque flèche porte son numéro et la donnée transportée · orange = point de vigilance à discuter avec la DPO</font><br/> >];
+  node [fontname="Liberation Sans", fontsize=13, style="filled", fillcolor="white", color="#5F5E5A", penwidth=1.3];
+  edge [fontname="Liberation Sans", fontsize=11, color="#5F5E5A", fontcolor="#333333", penwidth=1.3];
+
+  U  [label="Utilisateur", shape=ellipse, fillcolor="white"];
+  EQ [label="Équipe interne", shape=ellipse, fillcolor="white"];
+
+  subgraph cluster_app { label=<<b>Chez FashMatch</b>>; style="rounded,dashed,filled"; fillcolor="#FAFAF7"; color="#5F5E5A"; fontsize=15;
+    node [shape=box, style="rounded,filled"];
+    API [label="App + API\nFashMatch"];
+    M [label="Match"]; C [label="Cabine"]; MG [label="Modèle\ngénératif"]; S [label="Stella"];
+    AGE [label="Âge"]; P [label="Pay3x\nscore interne"]; I [label="Insight", fillcolor="#FFF1E4", color="#E8710A", penwidth=2];
+  }
+  subgraph cluster_cloud { label=<<b>14 · Hébergeur cloud (tiers externe) : toutes les données, services en partie hors UE</b>>; style="rounded,dashed,filled"; fillcolor="#FFF6EE"; color="#E8710A"; fontcolor="#9A4A00"; fontsize=14; penwidth=2;
+    node [shape=cylinder];
+    DB [label="Base comptes\net historiques"];
+    PH [label="Photos\nen clair", fillcolor="#FFF1E4", color="#E8710A", penwidth=2];
+    CV [label="Conversations"];
+    TR [label="Jeu\nd'entraînement", fillcolor="#FFF1E4", color="#E8710A", penwidth=2];
+  }
+  node [shape=hexagon, style="filled", fillcolor="#FFFFFF", color="#5F5E5A"];
+  GPAI [label="Fournisseur du\nmodèle d'IA"]; PSP [label="Prestataire\nde paiement"];
+  RS [label="Réseaux\nsociaux", fillcolor="#FFF1E4", color="#E8710A", penwidth=2];
+  ADS [label="Campagnes\nmarketing", fillcolor="#FFF1E4", color="#E8710A", penwidth=2];
+
+  U -> API [label="1  préférences, clics, achats,\nphotos, messages"];
+  API -> M [label="2  navigation, achats,\npréférences"]; M -> DB [label="2  historiques (5 ans)"];
+  API -> C [label="3  selfie + tenue\n(n'importe quelle photo)", color="#E8710A", fontcolor="#9A4A00", penwidth=2];
+  C -> MG [label="3  selfie + tenue"];
+  C -> PH [label="4  selfie", color="#E8710A", fontcolor="#9A4A00", penwidth=2];
+  PH -> TR [label="5  photos réutilisées", color="#E8710A", fontcolor="#9A4A00", penwidth=2];
+  CV -> TR [label="5  conversations réutilisées", color="#E8710A", fontcolor="#9A4A00", penwidth=2];
+  MG -> RS [label="6  image générée sans mention IA", color="#E8710A", fontcolor="#9A4A00", penwidth=2];
+  API -> S [label="7  message"]; S -> GPAI [label="7  messages complets", color="#E8710A", fontcolor="#9A4A00", penwidth=2];
+  S -> CV [label="8  messages + réponses"];
+  API -> AGE [label="9  photo du visage"]; AGE -> U [label="9  refus sans motif ni recours", color="#E8710A", fontcolor="#9A4A00", penwidth=2, constraint=false];
+  PSP -> P [label="10  incidents, données\nde paiement"];
+  API -> P [label="11  historique d'achats"]; P -> PSP [label="11  achats + score", color="#E8710A", fontcolor="#9A4A00", penwidth=2];
+  P -> U [label="12  refus sans motif", color="#E8710A", fontcolor="#9A4A00", penwidth=2, constraint=false];
+  API -> I [label="13  photos"]; I -> ADS [label="13  religion, orientation,\norigine déduites (interdit)", color="#E8710A", fontcolor="#9A4A00", penwidth=2.5];
+  EQ -> DB [label="15  comptes, historiques\n(accès non tracés)", style=dashed, color="#E8710A", fontcolor="#9A4A00"];
+  EQ -> PH [label="15  photos", style=dashed, color="#E8710A", fontcolor="#9A4A00"];
+  EQ -> CV [label="15  conversations", style=dashed, color="#E8710A", fontcolor="#9A4A00"];
+
+}

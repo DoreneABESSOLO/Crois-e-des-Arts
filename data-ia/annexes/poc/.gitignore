@@ -1,0 +1,5 @@
+output/
+vault/
+data/raw/*.csv
+__pycache__/
+.env
