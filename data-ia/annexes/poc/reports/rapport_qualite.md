@@ -1,7 +1,7 @@
 # Rapport de qualité des données — POC FashMatch V2
 
-- **Exécution** : `cf0055b6e8b7` — date de référence 2026-11-13
-- **Source catalogue** : catalogue de substitution (styles.csv absent)
+- **Exécution** : `d4930cb7fd0a` — date de référence 2026-11-13
+- **Source catalogue** : kaggle:fashion-product-images-small/styles.csv
 - **Profils** : 100 % synthétiques, aucune donnée réelle, aucune photo
 - **Journal d'audit** : ✅ intègre
 
@@ -15,8 +15,8 @@
 | Pays non normalisés | 21 | 0 |
 | Moins de 15 ans exclus | – | 188 |
 | Comptes inactifs purgés | – | 299 |
-| Doublons catalogue | 30 | 0 |
-| Articles essayés sur avatar uniquement dans Cabine (maillots, lingerie…) | – | 235 / 3000 |
+| Doublons catalogue | 0 | 0 |
+| Articles essayés sur avatar uniquement dans Cabine (maillots, lingerie…) | – | 2146 / 44424 |
 
 **Champs supprimés par minimisation** : `declared_age`, `street_address`, `selfie_uri`, `pay3x_age_ok`
 
@@ -52,15 +52,15 @@ dégraderait la recommandation sans que l'utilisateur le sache). Le parcours V2 
 | 45-54 | 2.5 |
 | 55+ | 0.2 |
 
-**Genre des articles du catalogue** (ratio max/min = 11.7) :
+**Genre des articles du catalogue** (ratio max/min = 33.3) :
 
 | Valeur | % |
 |---|---|
-| Men | 46.9 |
-| Women | 37.8 |
-| Unisex | 6.7 |
-| Boys | 4.5 |
-| Girls | 4.0 |
+| Men | 49.9 |
+| Women | 41.9 |
+| Unisex | 4.9 |
+| Boys | 1.9 |
+| Girls | 1.5 |
 
 **Effet du consentement sur le jeu d'entraînement** : le jeu d'entraînement ne garde que les
 profils ayant consenti. Vérifier qu'il reste représentatif de la base :
