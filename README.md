@@ -33,15 +33,24 @@ Organisation demandée dans le how-to tech :
 
 ```
 croisee-des-arts-2026/
-├── README.md                 planning du groupe
-├── commun/                   matrice de tri, présentation
-├── dpo/                      audit, registres, AIPD
+├── README.md                       planning du groupe
+├── commun/
+│   ├── L0_planning_groupe.xlsx     planning détaillé
+│   ├── L1-matrice-de-tri.md        matrice de tri (+ L1_Matrice_de_tri_module.xlsm)
+│   ├── L6-analyse-de-risques.md    analyse de risques (+ L6_analyse_de_risques.xlsx)
+│   └── presentation_finale.pptx    présentation de soutenance
+├── dpo/                            livrables DPO : audit, registres, AIPD (voir dpo/README.md)
 └── data-ia/
-    ├── inventaire.md         étape 1
-    ├── flux.md               étape 2
-    ├── pipeline.md           étape 3
-    ├── architecture.md       étape 4
-    └── cahier-des-charges.md étape 5
+    ├── inventaire.md               étape 1
+    ├── flux.md                     étape 2
+    ├── pipeline.md                 étape 3
+    ├── architecture.md             étape 4
+    ├── cahier-des-charges.md       étape 5
+    └── annexes/
+        ├── schemas/                images des schémas + sources (.dot, .js, .pptx)
+        ├── poc/                    preuve de concept (pipeline conforme)
+        ├── inventaire_donnees_FashMatch.xlsx
+        └── Cahier_des_charges_FashMatch_V2.pdf
 ```
 
 Les fichiers qui accompagnent les étapes Data/IA sont rangés dans `data-ia/annexes/` : images des schémas et leur source (`annexes/schemas/`), inventaire en tableur, cahier des charges en PDF et preuve de concept (`annexes/poc/`). Dans `commun/`, l'analyse de risques (L6) est mise en commun avec la DPO, comme le demande le sujet, et le planning détaillé (L0) complète ce README.
@@ -49,6 +58,22 @@ Les fichiers qui accompagnent les étapes Data/IA sont rangés dans `data-ia/ann
 Les schémas sont versionnés avec leur source, pas seulement en capture : Graphviz (`.dot`) pour la carte des flux, scripts qui génèrent des fichiers PowerPoint modifiables pour le pipeline et l'architecture.
 
 Code couleur commun à tous les schémas : **orange** = problème V1 ou point de vigilance, **bleu** = mesure V2, rien d'autre ; tout le reste est en noir, blanc et gris. Même légende partout : acteur (ovale), traitement (rectangle arrondi), stockage (cylindre), tiers externe (hexagone), frontière (pointillés).
+
+## Preuve de concept
+
+Le dossier [`data-ia/annexes/poc/`](data-ia/annexes/poc/) démontre qu'un pipeline conforme au RGPD
+est implémentable sur le module Match et l'éligibilité d'âge Pay3x.
+
+- **Données** : catalogue réel (dataset public Kaggle Fashion Product Images, 44 424 articles,
+  aucune donnée personnelle) et 2 000 profils clients 100 % synthétiques.
+- **Règles appliquées** : dédoublonnage, quarantaine des âges incohérents, exclusion des moins de
+  15 ans, purge des comptes inactifs depuis plus de 3 ans, pseudonymisation HMAC avec coffre séparé,
+  minimisation par finalité, consentements séparés, journal d'audit chaîné.
+- **Résultat** : 8 tests de conformité sur 8 réussis ; 1 193 profils de personnalisation, dont 515
+  pour l'entraînement ; biais réel du catalogue mis en évidence (49,9 % d'articles homme contre
+  41,9 % femme). Voir le [rapport qualité](data-ia/annexes/poc/reports/rapport_qualite.md).
+- **Lancement** : procédure complète (Windows, Linux, Docker) dans le
+  [README du POC](data-ia/annexes/poc/README.md).
 
 ## Checklist du vendredi (how-to tech)
 

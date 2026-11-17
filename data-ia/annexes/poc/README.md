@@ -1,22 +1,76 @@
 # POC — Pipeline de données conforme FashMatch V2
 
 Démonstration, sur un périmètre limité (module **Match** + éligibilité d'âge **Pay3x**),
-qu'un traitement conforme au RGPD est implémentable. **Aucune donnée réelle, aucune photo.**
+qu'un traitement conforme au RGPD est implémentable.
 
-## Lancer en 3 commandes
+**Données utilisées** :
+
+- **Catalogue réel** : `styles.csv` du dataset public Kaggle
+  [Fashion Product Images (Small)](https://www.kaggle.com/datasets/paramaggarwal/fashion-product-images-small),
+  44 424 articles, aucune donnée personnelle.
+- **Profils clients 100 % synthétiques** : 2 000 profils générés par code (seed fixe), aucune photo,
+  avec des défauts injectés volontairement (doublons, âges incohérents, champs sur-collectés).
+  Utiliser de vrais profils pour une démonstration serait contraire au RGPD (art. 5.1.c).
+
+## Lancer le POC
+
+Toutes les commandes s'exécutent depuis le dossier `data-ia/annexes/poc/`. Python 3.10 ou plus.
+
+### 1. Installer les dépendances
 
 ```bash
-pip install -r requirements.txt
-make test      # 8 tests de conformité
-make run       # génère reports/rapport_qualite.md et .json
+python -m pip install -r requirements.txt kagglehub
 ```
 
-Ou sans Python local : `make docker`.
+### 2. Récupérer le catalogue Kaggle
 
-Pour utiliser le vrai catalogue, déposer `styles.csv` du dataset Kaggle
-[Fashion Product Images (Small)](https://www.kaggle.com/datasets/paramaggarwal/fashion-product-images-small)
-dans `data/raw/` (non versionné, licence Kaggle). Sans ce fichier, un catalogue de substitution
-au même schéma est généré pour que le POC reste exécutable par un tiers.
+`styles.csv` n'est pas versionné (licence Kaggle). On ne télécharge que ce fichier (4 Mo),
+pas le dataset complet (environ 600 Mo d'images) :
+
+```bash
+python -c "import kagglehub, shutil; shutil.copy(kagglehub.dataset_download('paramaggarwal/fashion-product-images-small', path='styles.csv'), 'data/raw/styles.csv')"
+```
+
+Sans ce fichier, un catalogue de substitution au même schéma est généré automatiquement pour que
+le POC reste exécutable ; le rapport l'indique alors dans « Source catalogue ».
+
+### 3. Tester et exécuter
+
+Windows (PowerShell) :
+
+```powershell
+$env:PYTHONPATH = "src"; python -m unittest discover -s tests -v   # 8 tests de conformité
+$env:PYTHONPATH = "src"; python -m fashmatch_poc.pipeline          # génère le rapport
+```
+
+Linux / macOS (avec `make`) : `make test` puis `make run`. Avec Docker : `make docker`.
+
+Optionnel : définir `FASHMATCH_PSEUDO_KEY` pour une clé de pseudonymisation fixe
+(sinon clé éphémère à chaque exécution).
+
+## Résultats obtenus
+
+Exécution avec le catalogue Kaggle : **8 tests sur 8 réussis**, journal d'audit intègre.
+
+| Étape | Résultat |
+|---|---|
+| Profils bruts | 2 060 (2 000 + 60 doublons injectés) |
+| Doublons supprimés | 60 |
+| Âges incohérents mis en quarantaine | 40 |
+| Moins de 15 ans exclus | 188 |
+| Comptes inactifs > 3 ans purgés | 299 |
+| Profils de personnalisation (pseudonymisés, minimisés) | 1 193 |
+| Profils d'entraînement (consentement spécifique) | 515 |
+| Profils vérifiés pour Pay3x | 1 473 |
+| Articles du catalogue | 44 424 (0 doublon) |
+| Articles réservés à l'essayage sur avatar (maillots, lingerie…) | 2 146 |
+
+Biais mis en évidence : le catalogue réel est majoritairement masculin (49,9 % « Men », 41,9 %
+« Women ») alors que la clientèle simulée est à 70 % féminine. Détail complet :
+[`reports/rapport_qualite.md`](reports/rapport_qualite.md).
+
+Fichiers produits (non versionnés) : `output/fashmatch_v2.sqlite` (zone analytique),
+`output/audit_log.jsonl` (journal chaîné), `vault/correspondance.csv` (coffre de correspondance).
 
 ## Ce que fait le pipeline
 

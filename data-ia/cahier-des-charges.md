@@ -196,6 +196,7 @@ Le cycle de vie de la donnée compare la V1 et la V2 sur les mêmes six étapes,
 
 Une exigence est réputée satisfaite lorsque sa colonne « Vérification » est passée avec succès et
 archivée dans le dépôt. Les exigences EX-01 à EX-06, EX-09 et EX-10 sont déjà vérifiées
-automatiquement par le PoC (`make test` dans [`annexes/poc/`](annexes/poc)).
+automatiquement par le PoC : 8 tests sur 8 réussis avec le catalogue réel Kaggle
+(procédure de lancement dans [`annexes/poc/README.md`](annexes/poc/README.md)).
 
 Version PDF de ce cahier des charges : [`annexes/Cahier_des_charges_FashMatch_V2.pdf`](annexes/Cahier_des_charges_FashMatch_V2.pdf).
